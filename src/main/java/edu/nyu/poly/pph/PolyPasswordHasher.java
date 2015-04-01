@@ -30,33 +30,33 @@ public class PolyPasswordHasher {
     private List<PPHAccount> users;
     // knowledge of shares to decode others.
     private int threshold;
-    private final int nextavailableshare = 1;
+    private int nextavailableshare = 1;
     private final int MAX_NUMBER_OF_SHARES = 255;
     private final int saltsize = 16;
 
     private byte[] shieldKey;
     private ShamirSchem sc;
     private String[] pieces;
-    private List<ShareEntry> sharesEntires;
+    
     private byte[] shamirData;
 
     public PolyPasswordHasher(int threshold, String secret) throws UnsupportedEncodingException {
         this.threshold = threshold;
-        this.shieldKey = secret.getBytes();
+        this.shieldKey = secret.getBytes("UTF-8");
         this.sc = new ShamirSchem();
         // shieldkey, divide the shieldkey to n shares, number of shares to recover 
         pieces = sc.splitSecretIntoPieces(secret, MAX_NUMBER_OF_SHARES, this.threshold);
         users = new ArrayList<>();
-        sharesEntires = new ArrayList<>();
+       
     }
 
     public void createAccount(String username, String password, int shares) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, IllegalBlockSizeException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, Exception {
-
+        
         if (isAccountUnique(username)) {
             return;
         }
 
-        if (shares < 0 || shares > 255) {
+        if (shares < 0 || shares > MAX_NUMBER_OF_SHARES) {
             return;
         }
 
@@ -64,79 +64,77 @@ public class PolyPasswordHasher {
             return;
         }
 
-        PPHAccount ppa = new PPHAccount(username,password);
-
-        if (shares != 0) {
+        PPHAccount ppa = new PPHAccount(username, password);
+        
+        List<ShareEntry> sharesEntires = new ArrayList<>();
+        
+        if (shares == 0) {
+            ShareEntry se = new ShareEntry();
+            se.setShareNum(0);
+            byte[] salt = SecurityUtil.getSalt(saltsize);
+            se.setSalt(salt);
+        
+            byte[] saltedHashPass = SecurityUtil.getHash(
+                    SecurityUtil.concatenateByteArrays(
+                            salt, password.getBytes("UTF-8")));
+            AES.setKey(this.shieldKey);
+            byte[] ph = AES.encrypt(saltedHashPass).getBytes("UTF-8");
+            se.setPassHash(ph);
+            sharesEntires.add(se);
+            
+            ppa.setShareEntry(sharesEntires);
+            users.add(ppa);
+            
+        } else if (shares != 0) {
             ShareEntry se = new ShareEntry();
             for (int i = nextavailableshare; i < nextavailableshare + shares; i++) {
                 se.setShareNum(i);
-                shamirData = SecurityUtil.concatenateByteArrays(this.sc.computeShare(pieces,i),this.sc.computeShare(pieces,i));
-                
+                shamirData = SecurityUtil.concatenateByteArrays(this.sc.computeShare(pieces, i), this.sc.computeShare(pieces, i));
+
                 byte[] salt = SecurityUtil.getSalt(saltsize);
                 se.setSalt(salt);
-                
-                byte[] saltedHashPass =
-                        SecurityUtil.getHash(
+
+                byte[] saltedHashPass
+                        = SecurityUtil.getHash(
                                 SecurityUtil.concatenateByteArrays(salt,
-                                password.getBytes()));
-                
+                                        password.getBytes("UTF-8")));
+
                 se.setPassHash(SecurityUtil.xorByteArray(saltedHashPass, shamirData));
 
                 sharesEntires.add(se);
                 ppa.setShareEntry(sharesEntires);
                 users.add(ppa);
             }
-            
-        } else if (shares == 0) {
-
-            ShareEntry se = new ShareEntry();
-            se.setShareNum(0);
-            byte[] salt = SecurityUtil.getSalt(saltsize);
-            se.setSalt(salt);
-       
-            byte[] saltedHashPass = SecurityUtil.getHash(
-                    SecurityUtil.concatenateByteArrays(salt, password.getBytes()));
-            AES.setKey(this.shieldKey);
-            byte[] ph = AES.encrypt(saltedHashPass).getBytes();
-            
-            se.setPassHash(ph);
-            sharesEntires.add(se);
-            ppa.setShareEntry(sharesEntires);
-            users.add(ppa);
-
         }
-
     }
 
     public boolean isValidLogin(String username, String password) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, IllegalBlockSizeException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, Exception {
 
         PPHAccount u = findPPHAccount(username);
-        
-        if (u==null)
+
+        if (u == null) {
             return false;
-        
+        }
+         
+        System.out.println("share num  " + u.getShareEntry().size() + " username "+ u.getUsername());
+                
         for (ShareEntry se : u.getShareEntry()) {
             byte[] saltedPassHash
                     = SecurityUtil.getHash(
                             SecurityUtil.concatenateByteArrays(
                                     se.getSalt(),
-                                    password.getBytes()));
-
-            byte[] sharedata = SecurityUtil.xorByteArray(saltedPassHash, se.getPassHash());
-
+                                    password.getBytes("UTF-8")));
+            
             if (se.getShareNum() == 0) {
                 AES.setKey(this.shieldKey);
-                byte[] enc = AES.encrypt(saltedPassHash).getBytes();
+                byte[] enc = AES.encrypt(saltedPassHash).getBytes("UTF-8");
                 byte[] dec = se.getPassHash();
-                
- //               System.out.println("enc "+ SecurityUtil.bytetoString(enc));
-  //              System.out.println("dec "+ SecurityUtil.bytetoString(dec));
                 return (enc == dec);
+            } else if (se.getShareNum()!=0){
+                byte[] sharedata = SecurityUtil.xorByteArray(saltedPassHash, se.getPassHash());
+                return (sc.isValidShare(pieces, sharedata, se.getShareNum()));
             }
-            
-            return (sc.isValidShare(pieces,sharedata,se.getShareNum()));
-        }
-
+        }  
         return false;
     }
 
@@ -156,12 +154,11 @@ public class PolyPasswordHasher {
      * @return
      */
     public PPHAccount findPPHAccount(String username) {
-        for (PPHAccount p: users) {
+        for (PPHAccount p : users) {
             if (p.getUsername().equals(username)) {
                 return p;
             }
         }
-
         return null;
     }
 
@@ -174,7 +171,6 @@ public class PolyPasswordHasher {
     }
 
     private boolean isValidShamireShare(int num, byte[] sharedata) {
-
         return Arrays.equals(pieces[num].getBytes(), sharedata);
     }
 

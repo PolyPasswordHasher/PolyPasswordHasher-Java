@@ -20,10 +20,10 @@ public class PPHAccount {
     private String password; // blah123
     private List<ShareEntry> shareEntry;
     private byte [] passHash;
-
+    
     
     public PPHAccount(String username, String password) {
-        shareEntry = new ArrayList<ShareEntry>();
+        shareEntry = new ArrayList<>();
         this.username= username;
         this.password = password;
     }
