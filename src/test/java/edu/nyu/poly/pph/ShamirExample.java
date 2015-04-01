@@ -19,7 +19,7 @@ import java.util.Properties;
  *
  * @author Ali Gholami <gholami@pdc.kth.se>
  */
-public class Test {
+public class ShamirExample {
 
     private static int shares;
     private static int threashold;
@@ -53,7 +53,5 @@ public class Test {
         
         String[] kPieces = list.toArray(new String[0]);
         System.out.println("Any " + threashold + " pieces: " + Arrays.toString(kPieces));
-      
-    
     }
 }
