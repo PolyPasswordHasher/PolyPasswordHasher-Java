@@ -99,7 +99,7 @@ public class ShamirSchem {
         return new String(secret.toByteArray(), "UTF-8");
     }
     
-    public String computeShare(String[] pieces, int shareNum){
+    public byte [] computeShare(String[] pieces, int shareNum){
     
         final ShareInfo shareInfo = newShareInfo(pieces[0]);
         final SecretShare.PublicInfo publicInfo = shareInfo.getPublicInfo();
@@ -110,18 +110,14 @@ public class ShamirSchem {
 
         for (int i = 1; i < pieces.length && i < k; i++) {
             kPieces.add(newShareInfo(pieces[i]));
-        }
-        
+        }       
         
         for(SecretShare.ShareInfo si: kPieces){
             if(si.getIndex()== shareNum){
-                System.out.println("index "+ si.getIndex() + " share: " +si.getShare());
-            
-                return si.getShare().toString();
-            }
-            
+                return si.getShare().toByteArray();
+            }           
         }
-        return "";
+        return null;
     }
 
     public boolean isValidShare(String[] pieces, byte [] data, int shareNum){
@@ -141,9 +137,7 @@ public class ShamirSchem {
         
         for(SecretShare.ShareInfo si: kPieces){
             if(si.getIndex()== shareNum){
-                System.out.println(si.getShare() + " "+ SecurityUtil.bytetoString(data));
-                
-                return SecurityUtil.stringToByte(si.getShare().toString())==data;
+                return  si.getShare().toByteArray() == data;
             }
             
         }

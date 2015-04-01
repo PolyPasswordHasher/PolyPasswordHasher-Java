@@ -72,6 +72,7 @@ public class Main {
 
         InputStream inputStream
                 = getClass().getClassLoader().getResourceAsStream("pph.properties");
+        
         props.load(inputStream);
     }
 }

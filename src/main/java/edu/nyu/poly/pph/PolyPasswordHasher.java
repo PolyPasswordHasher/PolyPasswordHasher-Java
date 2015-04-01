@@ -13,6 +13,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -41,12 +42,12 @@ public class PolyPasswordHasher {
 
     public PolyPasswordHasher(int threshold, String secret) throws UnsupportedEncodingException {
         this.threshold = threshold;
-        this.shieldKey = SecurityUtil.stringToByte(secret);
+        this.shieldKey = secret.getBytes();
         this.sc = new ShamirSchem();
         // shieldkey, divide the shieldkey to n shares, number of shares to recover 
         pieces = sc.splitSecretIntoPieces(secret, MAX_NUMBER_OF_SHARES, this.threshold);
         users = new ArrayList<>();
-        sharesEntires = new ArrayList<ShareEntry>();
+        sharesEntires = new ArrayList<>();
     }
 
     public void createAccount(String username, String password, int shares) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, IllegalBlockSizeException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, Exception {
@@ -69,22 +70,23 @@ public class PolyPasswordHasher {
             ShareEntry se = new ShareEntry();
             for (int i = nextavailableshare; i < nextavailableshare + shares; i++) {
                 se.setShareNum(i);
-                shamirData = SecurityUtil.stringToByte(this.sc.computeShare(pieces,i));
+                shamirData = SecurityUtil.concatenateByteArrays(this.sc.computeShare(pieces,i),this.sc.computeShare(pieces,i));
                 
                 byte[] salt = SecurityUtil.getSalt(saltsize);
                 se.setSalt(salt);
                 
                 byte[] saltedHashPass =
-                        SecurityUtil.getHash(SecurityUtil.concatenateByteArrays(salt,
-                        SecurityUtil.stringToByte(password)));
-                System.out.println(SecurityUtil.bytetoString(saltedHashPass));
+                        SecurityUtil.getHash(
+                                SecurityUtil.concatenateByteArrays(salt,
+                                password.getBytes()));
                 
                 se.setPassHash(SecurityUtil.xorByteArray(saltedHashPass, shamirData));
+
                 sharesEntires.add(se);
                 ppa.setShareEntry(sharesEntires);
                 users.add(ppa);
             }
-
+            
         } else if (shares == 0) {
 
             ShareEntry se = new ShareEntry();
@@ -93,9 +95,8 @@ public class PolyPasswordHasher {
             se.setSalt(salt);
        
             byte[] saltedHashPass = SecurityUtil.getHash(
-                    SecurityUtil.concatenateByteArrays(salt, SecurityUtil.stringToByte(password)));
-           
-             
+                    SecurityUtil.concatenateByteArrays(salt, password.getBytes()));
+            
             byte[] ph = AESEngine.encrypt(this.shieldKey, saltedHashPass);
             
             se.setPassHash(ph);
@@ -119,7 +120,7 @@ public class PolyPasswordHasher {
                     = SecurityUtil.getHash(
                             SecurityUtil.concatenateByteArrays(
                                     se.getSalt(),
-                                    SecurityUtil.stringToByte(password)));
+                                    password.getBytes()));
 
             byte[] sharedata = SecurityUtil.xorByteArray(saltedPassHash, se.getPassHash());
 
@@ -173,8 +174,7 @@ public class PolyPasswordHasher {
 
     private boolean isValidShamireShare(int num, byte[] sharedata) {
 
-        return pieces[num].equals(
-                            SecurityUtil.bytetoString(sharedata));
+        return Arrays.equals(pieces[num].getBytes(), sharedata);
     }
 
 }
