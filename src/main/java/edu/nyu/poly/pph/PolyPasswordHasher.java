@@ -82,14 +82,13 @@ public class PolyPasswordHasher {
             se.setPassHash(ph);
             sharesEntires.add(se);
             
-            ppa.setShareEntry(sharesEntires);
-            users.add(ppa);
-            
         } else if (shares != 0) {
             ShareEntry se = new ShareEntry();
             for (int i = nextavailableshare; i < nextavailableshare + shares; i++) {
                 se.setShareNum(i);
-                shamirData = SecurityUtil.concatenateByteArrays(this.sc.computeShare(pieces, i), this.sc.computeShare(pieces, i));
+                shamirData = SecurityUtil.concatenateByteArrays(
+                        this.sc.computeShare(pieces, i),
+                        this.sc.computeShare(pieces, i));
 
                 byte[] salt = SecurityUtil.getSalt(saltsize);
                 se.setSalt(salt);
@@ -102,10 +101,11 @@ public class PolyPasswordHasher {
                 se.setPassHash(SecurityUtil.xorByteArray(saltedHashPass, shamirData));
 
                 sharesEntires.add(se);
-                ppa.setShareEntry(sharesEntires);
-                users.add(ppa);
             }
         }
+            ppa.setShareEntry(sharesEntires);
+            users.add(ppa);
+            nextavailableshare = nextavailableshare + shares;
     }
 
     public boolean isValidLogin(String username, String password) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, IllegalBlockSizeException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, Exception {
