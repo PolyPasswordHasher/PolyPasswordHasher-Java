@@ -74,16 +74,4 @@ public class AES {
         return null;
     }
 
-    public static void main(String args[]) {
-        final String strToEncrypt = "My text to encrypt";
-        final String strPssword = "encryptor key";
-        AES.setKey(strPssword.getBytes());
-        AES.encrypt(strToEncrypt.getBytes());
-        System.out.println("String to Encrypt: " + strToEncrypt);
-        System.out.println("Encrypted: " + AES.getEncryptedString());
-        final String strToDecrypt = AES.getEncryptedString();
-        AES.decrypt(strToDecrypt.trim());
-        System.out.println("String To Decrypt : " + strToDecrypt);
-        System.out.println("Decrypted : " + AES.getDecryptedString());
-    }
 }
