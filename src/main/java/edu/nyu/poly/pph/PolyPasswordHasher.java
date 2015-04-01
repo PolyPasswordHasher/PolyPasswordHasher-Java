@@ -96,8 +96,8 @@ public class PolyPasswordHasher {
        
             byte[] saltedHashPass = SecurityUtil.getHash(
                     SecurityUtil.concatenateByteArrays(salt, password.getBytes()));
-            
-            byte[] ph = AESEngine.encrypt(this.shieldKey, saltedHashPass);
+            AES.setKey(this.shieldKey);
+            byte[] ph = AES.encrypt(saltedHashPass).getBytes();
             
             se.setPassHash(ph);
             sharesEntires.add(se);
@@ -125,7 +125,8 @@ public class PolyPasswordHasher {
             byte[] sharedata = SecurityUtil.xorByteArray(saltedPassHash, se.getPassHash());
 
             if (se.getShareNum() == 0) {
-                byte[] enc = AESEngine.encrypt(this.shieldKey, saltedPassHash);
+                AES.setKey(this.shieldKey);
+                byte[] enc = AES.encrypt(saltedPassHash).getBytes();
                 byte[] dec = se.getPassHash();
                 
  //               System.out.println("enc "+ SecurityUtil.bytetoString(enc));
