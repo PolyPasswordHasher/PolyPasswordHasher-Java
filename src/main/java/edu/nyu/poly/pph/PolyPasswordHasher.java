@@ -86,6 +86,9 @@ public class PolyPasswordHasher {
             ShareEntry se = new ShareEntry();
             for (int i = nextavailableshare; i < nextavailableshare + shares; i++) {
                 se.setShareNum(i);
+                System.out.println("### create account Share " + i+ " " + SecurityUtil.bytetoString(this.sc.computeShare(pieces, i)));
+                
+                 //E8D2p7yqLi6L1zp3EzKGqg== E8D2p7yqLi6L1zp3EzKGqg==
                 shamirData = SecurityUtil.concatenateByteArrays(
                         this.sc.computeShare(pieces, i),
                         this.sc.computeShare(pieces, i));

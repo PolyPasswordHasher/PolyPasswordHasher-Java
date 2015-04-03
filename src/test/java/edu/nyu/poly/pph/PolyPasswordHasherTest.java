@@ -53,6 +53,8 @@ public class PolyPasswordHasherTest extends TestCase{
 
     /**
      * Test of isValidLogin method, of class PolyPasswordHasher.
+     * @param username
+     * @param password
      */
     @Test
     public void testIsValidLogin(String username, String password) throws Exception {
@@ -67,6 +69,7 @@ public class PolyPasswordHasherTest extends TestCase{
 
     /**
      * Test of isAccountUnique method, of class PolyPasswordHasher.
+     * @param username
      */
     @Test
     public void testIsAccountUnique(String username) {
@@ -81,6 +84,7 @@ public class PolyPasswordHasherTest extends TestCase{
 
     /**
      * Test of findPPHAccount method, of class PolyPasswordHasher.
+     * @param username
      */
     @Test
     public void testFindPPHAccount(String username) {

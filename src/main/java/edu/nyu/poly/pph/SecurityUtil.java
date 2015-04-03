@@ -20,7 +20,6 @@ import java.util.UUID;
 public class SecurityUtil {
 
     private static final Random random = new SecureRandom();
-    private int nextAvailableShare = 1;
     private String hashingAlgorithm = "SHA-256";
 
     public static String getRandomString(int length) {
@@ -52,7 +51,7 @@ public class SecurityUtil {
     }
 
     public static String bytesToHex(byte[] bytes) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         for (byte byt : bytes) {
             result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));
         }

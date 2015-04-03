@@ -30,7 +30,7 @@ public class Main {
 
     public static void main(String[] args) throws NoSuchAlgorithmException, Exception {
         //int treashold = Integer.parseInt(props.getProperty("THRESHOLD"));
-        int treashold=10;
+        int treashold=2; // any two of n admin can unlock
         //String secret = props.getProperty("MASTER");
         String secret= "0cac5a40-3690-4167-9993-8b6bf58e";
         
@@ -39,12 +39,12 @@ public class Main {
         try {
             pph = new PolyPasswordHasher(treashold, secret);
 
-            // Create admin users
+            // Create admin users to get 5 shares
             pph.createAccount("admin", "correct horse", treashold / 2);
             pph.createAccount("root", "battery staple", treashold / 2);
             pph.createAccount("superuser", "purple monkey dishwasher", treashold / 2);
 
-            // Create user accounts
+            // Create user accounts protector
             pph.createAccount("alice", "kitten", 1);
             pph.createAccount("bob", "puppy", 1);
             pph.createAccount("charlie", "velociraptor", 1);
