@@ -6,6 +6,7 @@
 package edu.nyu.poly.pph;
 
 import com.tiemens.secretshare.engine.ShamirSchem;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import junit.framework.TestCase;
 import org.junit.After;
@@ -107,7 +108,7 @@ public class ShamirSchemTest extends TestCase{
      * Test of isValidShare method, of class ShamirSchem.
      */
     @Test
-    public void testIsValidShare() {
+    public void testIsValidShare() throws UnsupportedEncodingException {
         System.out.println("isValidShare");
         String[] pieces = null;
         byte[] data = null;

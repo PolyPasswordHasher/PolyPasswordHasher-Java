@@ -6,7 +6,6 @@
 package com.tiemens.secretshare.engine;
 
 import com.tiemens.secretshare.engine.SecretShare.ShareInfo;
-import edu.nyu.poly.pph.SecurityUtil;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -135,6 +134,7 @@ public class ShamirSchem {
             kPieces.add(newShareInfo(pieces[i]));
           
         }
+        //byte[] ushare = Arrays.copyOf(data, 16);
        
         for(SecretShare.ShareInfo si: kPieces){
             if(si.getIndex()== shareNum){  
