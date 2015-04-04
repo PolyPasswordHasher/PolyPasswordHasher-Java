@@ -49,13 +49,6 @@ import com.tiemens.secretshare.math.PolyEquationImpl;
  *
  */
 public class SecretShare {
-    // ==================================================
-  // class static data
-  // ==================================================
-
-    // ==================================================
-  // class static methods
-  // ==================================================
   /**
    * http://www.cromwell-intl.com/security/crypto/diffie-hellman.html says
    * "... choosing some prime p which is larger than the largest possible
@@ -923,9 +916,6 @@ public class SecretShare {
     }
   }
 
-    // ==================================================
-  // non public methods
-  // ==================================================
   private String dumpshares(List<ShareInfo> usetheseshares) {
     String ret = "";
     for (ShareInfo share : usetheseshares) {

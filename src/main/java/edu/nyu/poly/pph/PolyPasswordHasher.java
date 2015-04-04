@@ -232,7 +232,7 @@ public class PolyPasswordHasher {
 
     for (PPHAccount p : users) {
       return p.getUsername().equals(username);
-    }
+      }
 
     return false;
   }

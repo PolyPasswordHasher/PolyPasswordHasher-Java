@@ -1,7 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * *****************************************************************************
+ * Copyright (c) 2009, 2014 Tim Tiemens. All rights reserved. This program and
+ * the accompanying materials are made available under the terms of the GNU
+ * Lesser Public License v2.1 which accompanies this distribution, and is
+ * available at http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
+ *
+ * Contributors: Tim Tiemens - initial API and implementation
+ ******************************************************************************
  */
 package com.tiemens.secretshare.engine;
 
@@ -12,10 +23,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  *
  * @author Ali Gholami <gholami@pdc.kth.se>
  */
+
 public class ShamirSchem {
 
   public BigInteger stringToBigInteger(String in)
@@ -115,7 +128,6 @@ public class ShamirSchem {
 
     for (SecretShare.ShareInfo si : kPieces) {
       if (si.getIndex() == shareNum) {
-        //   System.out.println(" Share " + shareNum + " "+ SecurityUtil.bytetoString(si.getShare().toByteArray()));
         return si.getShare().toByteArray();
       }
     }

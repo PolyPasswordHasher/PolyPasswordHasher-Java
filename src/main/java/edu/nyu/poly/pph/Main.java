@@ -21,7 +21,7 @@ import javax.crypto.NoSuchPaddingException;
  */
 public class Main {
 
-  private static String proprtyFile = "pph.properties";
+  private static final String proprtyFile = "pph.properties";
 
   public static void main(String[] args) throws NoSuchAlgorithmException,
           Exception {
