@@ -18,110 +18,115 @@ import static org.junit.Assert.*;
  *
  * @author Ali Gholami <gholami@pdc.kth.se>
  */
-public class PolyPasswordHasherTest extends TestCase{
-    
-    public PolyPasswordHasherTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
+public class PolyPasswordHasherTest extends TestCase {
 
-    /**
-     * Test of createAccount method, of class PolyPasswordHasher.
-     */
-    @Test
-    public void testCreateAccount(String username, String password, int shares) throws Exception {
-        System.out.println("createAccount");
-        PolyPasswordHasher instance = null;
-        instance.createAccount(username, password, shares);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+  public PolyPasswordHasherTest() {
+  }
 
-    /**
-     * Test of isValidLogin method, of class PolyPasswordHasher.
-     * @param username
-     * @param password
-     */
-    @Test
-    public void testIsValidLogin(String username, String password) throws Exception {
-        System.out.println("isValidLogin");
-        PolyPasswordHasher instance = null;
-        boolean expResult = false;
-        boolean result = instance.isValidLogin(username, password);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-    /**
-     * Test of isAccountUnique method, of class PolyPasswordHasher.
-     * @param username
-     */
-    @Test
-    public void testIsAccountUnique(String username) {
-        System.out.println("isAccountUnique");
-        PolyPasswordHasher instance = null;
-        boolean expResult = false;
-        boolean result = instance.isAccountUnique(username);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+  @AfterClass
+  public static void tearDownClass() {
+  }
 
-    /**
-     * Test of findPPHAccount method, of class PolyPasswordHasher.
-     * @param username
-     */
-    @Test
-    public void testFindPPHAccount(String username) {
-        System.out.println("findPPHAccount");
-        PolyPasswordHasher instance = null;
-        PPHAccount expResult = null;
-        PPHAccount result = instance.findPPHAccount(username);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+  @Before
+  public void setUp() {
+  }
 
-    /**
-     * Test of getShamirData method, of class PolyPasswordHasher.
-     */
-    @Test
-    public void testGetShamirData() {
-        System.out.println("getShamirData");
-        PolyPasswordHasher instance = null;
-        byte[] expResult = null;
-        byte[] result = instance.getShamirData();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+  @After
+  public void tearDown() {
+  }
 
-    /**
-     * Test of setShamirData method, of class PolyPasswordHasher.
-     */
-    @Test
-    public void testSetShamirData() {
-        System.out.println("setShamirData");
-        byte[] shamirData = null;
-        PolyPasswordHasher instance = null;
-        instance.setShamirData(shamirData);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
+  /**
+   * Test of createAccount method, of class PolyPasswordHasher.
+   */
+  @Test
+  public void testCreateAccount(String username, String password, int shares)
+          throws Exception {
+    System.out.println("createAccount");
+    PolyPasswordHasher instance = null;
+    instance.createAccount(username, password, shares);
+    // TODO review the generated test code and remove the default call to fail.
+    fail("The test case is a prototype.");
+  }
+
+  /**
+   * Test of isValidLogin method, of class PolyPasswordHasher.
+   * <p>
+   * @param username
+   * @param password
+   */
+  @Test
+  public void testIsValidLogin(String username, String password) throws
+          Exception {
+    System.out.println("isValidLogin");
+    PolyPasswordHasher instance = null;
+    boolean expResult = false;
+    boolean result = instance.isValidLogin(username, password);
+    assertEquals(expResult, result);
+    // TODO review the generated test code and remove the default call to fail.
+    fail("The test case is a prototype.");
+  }
+
+  /**
+   * Test of isAccountUnique method, of class PolyPasswordHasher.
+   * <p>
+   * @param username
+   */
+  @Test
+  public void testIsAccountUnique(String username) {
+    System.out.println("isAccountUnique");
+    PolyPasswordHasher instance = null;
+    boolean expResult = false;
+    boolean result = instance.isAccountUnique(username);
+    assertEquals(expResult, result);
+    // TODO review the generated test code and remove the default call to fail.
+    fail("The test case is a prototype.");
+  }
+
+  /**
+   * Test of findPPHAccount method, of class PolyPasswordHasher.
+   * <p>
+   * @param username
+   */
+  @Test
+  public void testFindPPHAccount(String username) {
+    System.out.println("findPPHAccount");
+    PolyPasswordHasher instance = null;
+    PPHAccount expResult = null;
+    PPHAccount result = instance.findPPHAccount(username);
+    assertEquals(expResult, result);
+    // TODO review the generated test code and remove the default call to fail.
+    fail("The test case is a prototype.");
+  }
+
+  /**
+   * Test of getShamirData method, of class PolyPasswordHasher.
+   */
+  @Test
+  public void testGetShamirData() {
+    System.out.println("getShamirData");
+    PolyPasswordHasher instance = null;
+    byte[] expResult = null;
+    byte[] result = instance.getShamirData();
+    assertArrayEquals(expResult, result);
+    // TODO review the generated test code and remove the default call to fail.
+    fail("The test case is a prototype.");
+  }
+
+  /**
+   * Test of setShamirData method, of class PolyPasswordHasher.
+   */
+  @Test
+  public void testSetShamirData() {
+    System.out.println("setShamirData");
+    byte[] shamirData = null;
+    PolyPasswordHasher instance = null;
+    instance.setShamirData(shamirData);
+    // TODO review the generated test code and remove the default call to fail.
+    fail("The test case is a prototype.");
+  }
+
 }

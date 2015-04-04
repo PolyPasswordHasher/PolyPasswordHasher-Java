@@ -21,37 +21,39 @@ import java.util.Properties;
  */
 public class ShamirExample {
 
-    private static int shares;
-    private static int threashold;
-    private Properties props;
+  private static int shares;
+  private static int threashold;
+  private Properties props;
 
-    public void initContext() throws IOException {
-        props = new Properties();
-        InputStream inputStream
-                = getClass().getClassLoader().getResourceAsStream("user.properties");
-        props.load(inputStream);
-    }
+  public void initContext() throws IOException {
+    props = new Properties();
+    InputStream inputStream
+            = getClass().getClassLoader().getResourceAsStream("user.properties");
+    props.load(inputStream);
+  }
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        ShamirSchem sc = new ShamirSchem();
-        
-        //0cac5a40-3690-4167-9993-8b6bf58e
-        String thresholdlesskey = SecurityUtil.getRandomString(32);
-        
-        System.out.println(thresholdlesskey.getBytes().length);
-        // divide 3
-        int shares = 3;
-        
-        // revcover
-        int threashold = 2;
-        
-        String[] pieces = sc.splitSecretIntoPieces(thresholdlesskey, shares, threashold);
-        System.out.println( shares+ " pieces: " + Arrays.toString(pieces));
+  public static void main(String[] args) throws UnsupportedEncodingException {
+    ShamirSchem sc = new ShamirSchem();
 
-        List<String> list = new ArrayList<String>(Arrays.asList(pieces));
-        Collections.shuffle(list);
-        
-        String[] kPieces = list.toArray(new String[0]);
-        System.out.println("Any " + threashold + " pieces: " + Arrays.toString(kPieces));
-    }
+    //0cac5a40-3690-4167-9993-8b6bf58e
+    String thresholdlesskey = SecurityUtil.getRandomString(32);
+
+    System.out.println(thresholdlesskey.getBytes().length);
+    // divide 3
+    int shares = 3;
+
+    // revcover
+    int threashold = 2;
+
+    String[] pieces = sc.splitSecretIntoPieces(thresholdlesskey, shares,
+            threashold);
+    System.out.println(shares + " pieces: " + Arrays.toString(pieces));
+
+    List<String> list = new ArrayList<String>(Arrays.asList(pieces));
+    Collections.shuffle(list);
+
+    String[] kPieces = list.toArray(new String[0]);
+    System.out.println("Any " + threashold + " pieces: " + Arrays.toString(
+            kPieces));
+  }
 }

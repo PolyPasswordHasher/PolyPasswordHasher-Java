@@ -15,51 +15,47 @@ import java.util.List;
 public class PPHAccount {
 
     // every user has an account
+  private String username; // gholami
+  private String password; // blah123
+  private List<ShareEntry> shareEntry;
+  private byte[] passHash;
 
-    private String username; // gholami
-    private String password; // blah123
-    private List<ShareEntry> shareEntry;
-    private byte [] passHash;
-    
-    
-    public PPHAccount(String username, String password) {
-        shareEntry = new ArrayList<>();
-        this.username= username;
-        this.password = password;
-    }
+  public PPHAccount(String username, String password) {
+    shareEntry = new ArrayList<>();
+    this.username = username;
+    this.password = password;
+  }
 
-    
-    public byte[] getPassHash() {
-        return passHash;
-    }
+  public byte[] getPassHash() {
+    return passHash;
+  }
 
-    public void setPassHash(byte[] passHash) {
-        this.passHash = passHash;
-    }
+  public void setPassHash(byte[] passHash) {
+    this.passHash = passHash;
+  }
 
-    
-    public List <ShareEntry> getShareEntry() {
-        return shareEntry;
-    }
+  public List<ShareEntry> getShareEntry() {
+    return shareEntry;
+  }
 
-    public void setShareEntry(List<ShareEntry> shareEntry) {
-        this.shareEntry = shareEntry;
-    }
-    
-    public String getUsername() {
-        return username;
-    }
+  public void setShareEntry(List<ShareEntry> shareEntry) {
+    this.shareEntry = shareEntry;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
 }

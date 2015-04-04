@@ -12,36 +12,35 @@ package edu.nyu.poly.pph.model;
 public class ShareEntry {
 
     //threholdless 0 shares
-    // threshhold 1 admin account
-    private int shareNum; // just 1
+  // threshhold 1 admin account
+  private int shareNum; // just 1
 
-    private byte[] salt;
+  private byte[] salt;
 
-    private byte[] passHash;
+  private byte[] passHash;
 
-    
-    public int getShareNum() {
-        return shareNum;
-    }
+  public int getShareNum() {
+    return shareNum;
+  }
 
-    public void setShareNum(int shareNum) {
-        this.shareNum = shareNum;
-    }
+  public void setShareNum(int shareNum) {
+    this.shareNum = shareNum;
+  }
 
-    public byte[] getSalt() {
-        return salt;
-    }
+  public byte[] getSalt() {
+    return salt;
+  }
 
-    public void setSalt(byte[] salt) {
-        this.salt = salt;
-    }
+  public void setSalt(byte[] salt) {
+    this.salt = salt;
+  }
 
-    public byte[] getPassHash() {
-        return passHash;
-    }
+  public byte[] getPassHash() {
+    return passHash;
+  }
 
-    public void setPassHash(byte[] passHash) {
-        this.passHash = passHash;
-    }
+  public void setPassHash(byte[] passHash) {
+    this.passHash = passHash;
+  }
 
 }

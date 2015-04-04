@@ -286,6 +286,7 @@ public class PolyPasswordHasher {
    * @throws java.io.IOException
    */
   public final void loadPPHProperties(String propFile) throws IOException {
+ 
     props = new Properties();
 
     try (InputStream inputStream
