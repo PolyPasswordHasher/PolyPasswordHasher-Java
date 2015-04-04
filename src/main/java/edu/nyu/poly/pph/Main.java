@@ -42,28 +42,28 @@ public class Main {
             // Create admin users to get 5 shares
             pph.createAccount("admin", "correct horse", treashold / 2);
             pph.createAccount("root", "battery staple", treashold / 2);
-            
+        
             /*
             // Create user accounts protector
             pph.createAccount("alice", "kitten", 1);
             pph.createAccount("bob", "puppy", 1);
             pph.createAccount("charlie", "velociraptor", 1);
-            */
+          */   
             pph.createAccount("dennis", "menace", 0);
             pph.createAccount("eve", "iamevil", 0);
-          
+       
             System.out.println("alic kitten "+ pph.isValidLogin("alice", "kitten"));           
-            System.out.println(pph.isValidLogin("alice", "bob"));
+            System.out.println("alic bob "+ pph.isValidLogin("alice", "bob"));
             
-            System.out.println(pph.isValidLogin("admin", "correct horse"));
-            System.out.println(pph.isValidLogin("admin", "admin"));
+            System.out.println("admin correct horse "+ pph.isValidLogin("admin", "correct horse"));
+            System.out.println("admin admin "+pph.isValidLogin("admin", "admin"));
             
-            System.out.println(pph.isValidLogin("dennis", "password"));
-            System.out.println("eve correct " + pph.isValidLogin("dennis", "menace"));
+            System.out.println("denis password " +pph.isValidLogin("dennis", "password"));
+            System.out.println("denis menace " + pph.isValidLogin("dennis", "menace"));
      
             
-            System.out.println(pph.isValidLogin("eve", "password"));
-            System.out.println(pph.isValidLogin("eve", "iamevil"));
+            System.out.println("eve password "+ pph.isValidLogin("eve", "password"));
+            System.out.println("eve iamevil "+pph.isValidLogin("eve", "iamevil"));
      
             
         } catch (UnsupportedEncodingException | InvalidKeyException | IllegalBlockSizeException | InvalidAlgorithmParameterException | NoSuchPaddingException | BadPaddingException ex) {

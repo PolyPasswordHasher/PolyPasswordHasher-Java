@@ -10,6 +10,7 @@ import edu.nyu.poly.pph.SecurityUtil;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -121,7 +122,7 @@ public class ShamirSchem {
         return null;
     }
 
-    public boolean isValidShare(String[] pieces, byte [] data, int shareNum){
+    public boolean isValidShare(String[] pieces, byte [] data, int shareNum) throws UnsupportedEncodingException{
     
         final ShareInfo shareInfo = newShareInfo(pieces[0]);
         final SecretShare.PublicInfo publicInfo = shareInfo.getPublicInfo();
@@ -134,11 +135,11 @@ public class ShamirSchem {
             kPieces.add(newShareInfo(pieces[i]));
           
         }
-        
-        
+       
         for(SecretShare.ShareInfo si: kPieces){
-            if(si.getIndex()== shareNum){
-                return  si.getShare().toByteArray() == data;
+            if(si.getIndex()== shareNum){  
+              return  Arrays.equals(si.getShare().toByteArray(),Arrays.copyOf(
+                      data, 16));
             }
             
         }

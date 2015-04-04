@@ -120,8 +120,6 @@ public class PolyPasswordHasher {
             return false;
         }
          
-        System.out.println("shares size  " + u.getShareEntry().size() + " username "+ u.getUsername());
-                
         for (ShareEntry se : u.getShareEntry()) {
             byte[] saltedPassHash
                     = SecurityUtil.getHash(
@@ -133,8 +131,6 @@ public class PolyPasswordHasher {
                 AES.setKey(this.shieldKey);
                 byte[] enc = AES.encrypt(saltedPassHash).getBytes("UTF-8");
                 byte[] dec = se.getPassHash();
-                System.out.println("share entry "+ se.getShareNum());
-                        System.out.println(new String(enc) +"\n " +new  String(dec));
                 return (Arrays.equals(enc, dec));
             } else if (se.getShareNum()!=0){
                 byte[] sharedata = SecurityUtil.xorByteArray(saltedPassHash, se.getPassHash());
@@ -176,8 +172,8 @@ public class PolyPasswordHasher {
         this.shamirData = shamirData;
     }
 
-    private boolean isValidShamireShare(int num, byte[] sharedata) {
-        return Arrays.equals(pieces[num].getBytes(), sharedata);
+    private boolean isValidShamireShare(int num, byte[] sharedata) throws UnsupportedEncodingException {
+        return Arrays.equals(pieces[num].getBytes("UTF-8"), sharedata);
     }
 
 }
