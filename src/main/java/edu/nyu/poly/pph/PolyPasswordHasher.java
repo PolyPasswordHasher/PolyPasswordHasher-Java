@@ -36,12 +36,12 @@ public class PolyPasswordHasher {
 
   private byte[] shieldKey;
 
-// knowledge of shares to decode others.
+  // knowledge of shares to decode others.
   private int threshold;
 
-  private int maxSharesSize;
+  private final int maxSharesSize;
 
-  private int saltSize;
+  private final int saltSize;
 
   private int nextavailableshare = 1;
 
@@ -55,21 +55,39 @@ public class PolyPasswordHasher {
           IOException {
 
     loadPPHProperties(propFile);
+  
     this.threshold = Integer.parseInt(props.getProperty("THRESHOLD"));
+    
     this.shieldKey = props.getProperty("MASTER_KEY").getBytes("UTF-8");
+    
     this.maxSharesSize = Integer.parseInt(props.getProperty(
             "MAX_NUMBER_OF_SHARES"));
+    
     this.saltSize = Integer.parseInt(props.getProperty("SALT_SIZE"));
+    
     this.sc = new ShamirSchem();
 
     // shieldkey, divide the shieldkey to n shares, number of shares to recover 
-    pieces = sc.splitSecretIntoPieces(props.getProperty("MASTER_KEY"),
-            maxSharesSize, this.threshold);
+    pieces = sc.splitSecretIntoPieces(props.getProperty("MASTER_KEY"), maxSharesSize, this.threshold);
 
     users = new ArrayList<>();
 
   }
 
+  /**
+   * Create a user account.
+   * @param username
+   * @param password
+   * @param shares
+   * @throws NoSuchAlgorithmException
+   * @throws UnsupportedEncodingException
+   * @throws InvalidKeyException
+   * @throws IllegalBlockSizeException
+   * @throws InvalidAlgorithmParameterException
+   * @throws NoSuchPaddingException
+   * @throws BadPaddingException
+   * @throws Exception 
+   */
   public void createAccount(String username, String password, int shares) throws
           NoSuchAlgorithmException, UnsupportedEncodingException,
           InvalidKeyException, IllegalBlockSizeException,
@@ -93,48 +111,72 @@ public class PolyPasswordHasher {
     List<ShareEntry> sharesEntires = new ArrayList<>();
 
     if (shares == 0) {
+      
       ShareEntry se = new ShareEntry();
+      
       se.setShareNum(0);
+      
       byte[] salt = SecurityUtil.getSalt(saltSize);
+      
       se.setSalt(salt);
 
       byte[] saltedHashPass = SecurityUtil.getHash(
               SecurityUtil.concatenateByteArrays(
                       salt, password.getBytes("UTF-8")));
       AES.setKey(this.shieldKey);
+      
       byte[] ph = AES.encrypt(saltedHashPass).getBytes("UTF-8");
+      
       se.setPassHash(ph);
+      
       sharesEntires.add(se);
 
     } else if (shares != 0) {
+      
       ShareEntry se = new ShareEntry();
+      
       for (int i = nextavailableshare; i < nextavailableshare + shares; i++) {
+      
         se.setShareNum(i);
 
-        //System.out.println("### create account Share " + i+ " " + SecurityUtil.bytetoString(this.sc.computeShare(pieces, i)));
-        //E8D2p7yqLi6L1zp3EzKGqg== E8D2p7yqLi6L1zp3EzKGqg==
-        shamirData = SecurityUtil.concatenateByteArrays(
+        shamirData = SecurityUtil.concatenateByteArrays( 
                 this.sc.computeShare(pieces, i),
                 this.sc.computeShare(pieces, i));
 
         byte[] salt = SecurityUtil.getSalt(saltSize);
+        
         se.setSalt(salt);
 
-        byte[] saltedHashPass
-                = SecurityUtil.getHash(
-                        SecurityUtil.concatenateByteArrays(salt,
-                                password.getBytes("UTF-8")));
+        byte[] saltedHashPass = SecurityUtil.getHash(
+                        SecurityUtil.concatenateByteArrays(salt, password.getBytes("UTF-8")));
 
         se.setPassHash(SecurityUtil.xorByteArray(saltedHashPass, shamirData));
 
         sharesEntires.add(se);
       }
     }
+    
     ppa.setShareEntry(sharesEntires);
+    
     users.add(ppa);
+    
     nextavailableshare = nextavailableshare + shares;
   }
 
+  /**
+   * Validate the user credentials.
+   * @param username
+   * @param password
+   * @return
+   * @throws NoSuchAlgorithmException
+   * @throws UnsupportedEncodingException
+   * @throws InvalidKeyException
+   * @throws IllegalBlockSizeException
+   * @throws InvalidAlgorithmParameterException
+   * @throws NoSuchPaddingException
+   * @throws BadPaddingException
+   * @throws Exception 
+   */
   public boolean isValidLogin(String username, String password) throws
           NoSuchAlgorithmException, UnsupportedEncodingException,
           InvalidKeyException, IllegalBlockSizeException,
@@ -148,6 +190,7 @@ public class PolyPasswordHasher {
     }
 
     for (ShareEntry se : u.getShareEntry()) {
+     
       byte[] saltedPassHash
               = SecurityUtil.getHash(
                       SecurityUtil.concatenateByteArrays(
@@ -155,25 +198,36 @@ public class PolyPasswordHasher {
                               password.getBytes("UTF-8")));
 
       if (se.getShareNum() == 0) {
+      
         AES.setKey(this.shieldKey);
+        
         byte[] enc = AES.encrypt(saltedPassHash).getBytes("UTF-8");
+        
         byte[] dec = se.getPassHash();
+        
         return (Arrays.equals(enc, dec));
+     
       } else if (se.getShareNum() != 0) {
-        byte[] sharedata = SecurityUtil.xorByteArray(saltedPassHash, se.
-                getPassHash());
+      
+        byte[] sharedata = SecurityUtil.xorByteArray(saltedPassHash, se.getPassHash());
+       
         return (sc.isValidShare(pieces, sharedata, se.getShareNum()));
       }
     }
     return false;
   }
 
+  /**
+   * Ensure account is unique.
+   * @param username
+   * @return 
+   */
   public boolean isAccountUnique(String username) {
 
     for (PPHAccount p : users) {
-      return p.getUsername().equals(username);
+       return p.getUsername().equals(username);
     }
-
+    
     return false;
   }
 
@@ -200,18 +254,6 @@ public class PolyPasswordHasher {
     this.shamirData = shamirData;
   }
 
-  private boolean isValidShamireShare(int num, byte[] sharedata) throws
-          UnsupportedEncodingException {
-    return Arrays.equals(pieces[num].getBytes("UTF-8"), sharedata);
-  }
-
-  public PPHAccount getPphAccount() {
-    return pphAccount;
-  }
-
-  public void setPphAccount(PPHAccount pphAccount) {
-    this.pphAccount = pphAccount;
-  }
 
   public List<PPHAccount> getUsers() {
     return users;
