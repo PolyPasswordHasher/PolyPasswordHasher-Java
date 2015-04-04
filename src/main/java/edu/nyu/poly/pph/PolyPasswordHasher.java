@@ -86,9 +86,10 @@ public class PolyPasswordHasher {
             ShareEntry se = new ShareEntry();
             for (int i = nextavailableshare; i < nextavailableshare + shares; i++) {
                 se.setShareNum(i);
-                System.out.println("### create account Share " + i+ " " + SecurityUtil.bytetoString(this.sc.computeShare(pieces, i)));
                 
-                 //E8D2p7yqLi6L1zp3EzKGqg== E8D2p7yqLi6L1zp3EzKGqg==
+                //System.out.println("### create account Share " + i+ " " + SecurityUtil.bytetoString(this.sc.computeShare(pieces, i)));
+                
+                //E8D2p7yqLi6L1zp3EzKGqg== E8D2p7yqLi6L1zp3EzKGqg==
                 shamirData = SecurityUtil.concatenateByteArrays(
                         this.sc.computeShare(pieces, i),
                         this.sc.computeShare(pieces, i));
@@ -119,7 +120,7 @@ public class PolyPasswordHasher {
             return false;
         }
          
-        System.out.println("share num  " + u.getShareEntry().size() + " username "+ u.getUsername());
+        System.out.println("shares size  " + u.getShareEntry().size() + " username "+ u.getUsername());
                 
         for (ShareEntry se : u.getShareEntry()) {
             byte[] saltedPassHash
@@ -132,7 +133,9 @@ public class PolyPasswordHasher {
                 AES.setKey(this.shieldKey);
                 byte[] enc = AES.encrypt(saltedPassHash).getBytes("UTF-8");
                 byte[] dec = se.getPassHash();
-                return (enc == dec);
+                System.out.println("share entry "+ se.getShareNum());
+                        System.out.println(new String(enc) +"\n " +new  String(dec));
+                return (Arrays.equals(enc, dec));
             } else if (se.getShareNum()!=0){
                 byte[] sharedata = SecurityUtil.xorByteArray(saltedPassHash, se.getPassHash());
                 return (sc.isValidShare(pieces, sharedata, se.getShareNum()));

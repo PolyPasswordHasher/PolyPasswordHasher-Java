@@ -20,7 +20,7 @@ import java.util.UUID;
 public class SecurityUtil {
 
     private static final Random random = new SecureRandom();
-    private String hashingAlgorithm = "SHA-256";
+    private static String hashingAlgorithm = "SHA-256";
 
     public static String getRandomString(int length) {
         String randomStr = UUID.randomUUID().toString();
@@ -31,7 +31,7 @@ public class SecurityUtil {
     }
 
     public static byte[] getHash(byte[] data) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        MessageDigest digest = MessageDigest.getInstance(hashingAlgorithm);
         digest.reset();
         digest.update(data);
         return digest.digest(data);
@@ -45,11 +45,12 @@ public class SecurityUtil {
     }
 
     public static byte[] converToSHA256(byte data) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        MessageDigest md = MessageDigest.getInstance(hashingAlgorithm);
         md.update(data);
         return md.digest();
     }
 
+/*
     public static String bytesToHex(byte[] bytes) {
         StringBuilder result = new StringBuilder();
         for (byte byt : bytes) {
@@ -57,8 +58,6 @@ public class SecurityUtil {
         }
         return result.toString();
     }
-
-    
 
     public static byte[] stringToByte(String input) {
 
@@ -73,13 +72,14 @@ public class SecurityUtil {
         }
     }
 
+
     public static String bytetoString(byte[] input) {
         if (input == null) {
             return null;
         }
         return org.apache.commons.codec.binary.Base64.encodeBase64String(input);
     }
-
+*/
     public static byte[] xorByteArray(byte[] a1, byte[] a2) {
 
         byte[] a3 = new byte[a1.length];

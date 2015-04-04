@@ -114,7 +114,7 @@ public class ShamirSchem {
         
         for(SecretShare.ShareInfo si: kPieces){
             if(si.getIndex()== shareNum){
-              System.out.println(" Share " + shareNum + " "+ SecurityUtil.bytetoString(si.getShare().toByteArray()));
+           //   System.out.println(" Share " + shareNum + " "+ SecurityUtil.bytetoString(si.getShare().toByteArray()));
               return si.getShare().toByteArray();
             }           
         }

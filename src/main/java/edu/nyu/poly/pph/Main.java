@@ -42,25 +42,30 @@ public class Main {
             // Create admin users to get 5 shares
             pph.createAccount("admin", "correct horse", treashold / 2);
             pph.createAccount("root", "battery staple", treashold / 2);
-            pph.createAccount("superuser", "purple monkey dishwasher", treashold / 2);
-
+            
+            /*
             // Create user accounts protector
             pph.createAccount("alice", "kitten", 1);
             pph.createAccount("bob", "puppy", 1);
             pph.createAccount("charlie", "velociraptor", 1);
-            
+            */
             pph.createAccount("dennis", "menace", 0);
             pph.createAccount("eve", "iamevil", 0);
-
-            System.out.println(pph.isValidLogin("alice", "kitten"));           
+          
+            System.out.println("alic kitten "+ pph.isValidLogin("alice", "kitten"));           
             System.out.println(pph.isValidLogin("alice", "bob"));
             
             System.out.println(pph.isValidLogin("admin", "correct horse"));
             System.out.println(pph.isValidLogin("admin", "admin"));
             
             System.out.println(pph.isValidLogin("dennis", "password"));
-            System.out.println(pph.isValidLogin("dennis", "menace"));
+            System.out.println("eve correct " + pph.isValidLogin("dennis", "menace"));
      
+            
+            System.out.println(pph.isValidLogin("eve", "password"));
+            System.out.println(pph.isValidLogin("eve", "iamevil"));
+     
+            
         } catch (UnsupportedEncodingException | InvalidKeyException | IllegalBlockSizeException | InvalidAlgorithmParameterException | NoSuchPaddingException | BadPaddingException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
