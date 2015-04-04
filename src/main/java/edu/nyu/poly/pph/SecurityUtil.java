@@ -20,7 +20,7 @@ import java.util.UUID;
 public class SecurityUtil {
 
     private static final Random random = new SecureRandom();
-    private static String hashingAlgorithm = "SHA-256";
+    private static final String hashingAlgorithm = "SHA-256";
 
     public static String getRandomString(int length) {
         String randomStr = UUID.randomUUID().toString();
@@ -50,36 +50,6 @@ public class SecurityUtil {
         return md.digest();
     }
 
-/*
-    public static String bytesToHex(byte[] bytes) {
-        StringBuilder result = new StringBuilder();
-        for (byte byt : bytes) {
-            result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));
-        }
-        return result.toString();
-    }
-
-    public static byte[] stringToByte(String input) {
-
-        if (input == null || input.isEmpty()) {
-            return null;
-        }
-        if (org.apache.commons.codec.binary.Base64.isBase64(input)) {
-            return org.apache.commons.codec.binary.Base64.decodeBase64(input);
-
-        } else {
-            return org.apache.commons.codec.binary.Base64.encodeBase64(input.getBytes());
-        }
-    }
-
-
-    public static String bytetoString(byte[] input) {
-        if (input == null) {
-            return null;
-        }
-        return org.apache.commons.codec.binary.Base64.encodeBase64String(input);
-    }
-*/
     public static byte[] xorByteArray(byte[] a1, byte[] a2) {
 
         byte[] a3 = new byte[a1.length];
